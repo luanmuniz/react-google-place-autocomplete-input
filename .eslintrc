@@ -1,0 +1,6 @@
+{
+  "extends": "luanmuniz",
+  "rules": {
+    "no-console": "off"
+  }
+}

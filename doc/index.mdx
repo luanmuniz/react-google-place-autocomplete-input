@@ -1,0 +1,23 @@
+---
+name: GooglePlaceSearchInput
+---
+
+import { Playground, PropsTable } from 'docz'
+import GooglePlaceSearchInput from '../dist/main'
+
+# GooglePlaceSearchInput
+
+I'm a markdown document that can have components!
+
+<PropsTable of={GooglePlaceSearchInput} />
+
+## Basic usage
+
+<Playground>
+    <GooglePlaceSearchInput
+        apiKey={''}
+        onChange={console.log}
+        onPlaceSelected={console.log}
+        value={'Test City'}
+    />
+</Playground>

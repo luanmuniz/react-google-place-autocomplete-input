@@ -1,0 +1,86 @@
+{
+  "name": "react-google-place-autocomplete-input",
+  "version": "0.1.0",
+  "description": "A Input React Component for Google Place AutoComplete",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luanmuniz/react-google-place-autocomplete-input.git"
+  },
+  "engines": {
+    "yarn": "NO LONGER USED - Please use npm"
+  },
+  "author": "Luan Muniz <luan@luanmuniz.com.br>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luanmuniz/react-google-place-autocomplete-input/issues"
+  },
+  "main": "index.js",
+  "scripts": {
+    "preversion": "git pull && rm -rf ./node_modules/ && npm install && npm test",
+    "postversion": "git push && npm publish --access=public && git push --tags",
+    "precommit-msg": "echo 'Pre-commit checks...'",
+    "test": "npm run eslint && npm run test-cov",
+    "build": "NODE_ENV=production BABEL_ENV=production webpack --progress --config webpack/prod.config -p",
+    "build:dev": "NODE_ENV=production BABEL_ENV=production webpack --progress --config webpack/dev.config -p",
+    "eslint": "eslint --ignore-path .npmignore **/*.js --quiet",
+    "eslint:fix": "eslint --ignore-path .npmignore **/*.js --quiet --fix",
+    "jest": "jest test --notify --config=jestrc.json",
+    "test-cov": "npm run jest -- --coverage",
+    "start": "npm run dev",
+    "dev": "node server.js",
+    "doc:dev": "docz dev",
+    "doc:build": "docz build",
+    "storybook": "start-storybook -p 6006 -c storybook",
+    "storybook:build": "cross-env NODE_ENV=production BABEL_ENV=production build-storybook -c storybook"
+  },
+  "pre-commit": [
+    "precommit-msg",
+    "test"
+  ],
+  "devDependencies": {
+    "@storybook/react": "3.4.7",
+    "babel-core": "6.26.0",
+    "babel-eslint": "8.2.2",
+    "babel-loader": "7.1.2",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-stage-1": "6.24.1",
+    "clean-webpack-plugin": "0.1.18",
+    "css-loader": "0.28.10",
+    "docz": "0.2.2",
+    "eslint": "4.19.1",
+    "eslint-config-luanmuniz": "0.1.3",
+    "eslint-config-standard": "11.0.0",
+    "eslint-config-standard-react": "6.0.0",
+    "eslint-loader": "1.9.0",
+    "eslint-plugin-import": "2.9.0",
+    "eslint-plugin-jest": "21.17.0",
+    "eslint-plugin-node": "6.0.1",
+    "eslint-plugin-promise": "3.6.0",
+    "eslint-plugin-react": "7.7.0",
+    "eslint-plugin-standard": "3.0.1",
+    "extract-text-webpack-plugin": "3.0.2",
+    "file-loader": "1.1.9",
+    "html-webpack-plugin": "2.30.1",
+    "jest": "23.1.0",
+    "postcss-cssnext": "3.1.0",
+    "postcss-focus": "3.0.0",
+    "postcss-loader": "2.1.0",
+    "postcss-reporter": "5.0.0",
+    "pre-commit": "1.2.2",
+    "prettier": "1.12.1",
+    "react-hot-loader": "3.1.3",
+    "react-test-renderer": "16.2.0",
+    "style-loader": "0.20.2",
+    "url-loader": "0.6.2",
+    "webpack": "3.11.0",
+    "webpack-bundle-analyzer": "2.10.0",
+    "webpack-dev-server": "2.11.1"
+  },
+  "dependencies": {
+    "classnames": "2.2.6",
+    "react": "16.4.0",
+    "whatwg-fetch": "2.0.4"
+  }
+}

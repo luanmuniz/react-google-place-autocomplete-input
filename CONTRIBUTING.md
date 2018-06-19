@@ -1,24 +1,11 @@
-React Google Place Autocomplete input
+Contribution Guide
 ===================
-A Input React Component for Google Place AutoComplete
+
+This document describes some points about contribution process for this project.
+The project is being developed within community. Maintainer merges pull-requests, fixes critical bugs.
 
 The maintainers of the project are:
 - [Luan Muniz](http://github.com/luanmuniz)
-
-## Using
-
-```javascript
-import React from 'react';
-import MyComponent from 'my-component';
-
-export default React.createClass({
-    render() {
-        return (
-            <MyComponent myName="World" />
-        );
-    }
-});
-```
 
 ## General notes
 
