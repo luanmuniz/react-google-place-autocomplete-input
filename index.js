@@ -21,6 +21,7 @@ export default class GooglePlaceSearchInput extends React.Component {
 		apiKey: PropTypes.string.isRequired,
 		onChange: PropTypes.func.isRequired,
 		onPlaceSelected: PropTypes.func.isRequired,
+		onRemove: PropTypes.func,
 		value: PropTypes.string.isRequired,
 		inputClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.object]),
 		containerClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string, PropTypes.object]),
@@ -93,6 +94,17 @@ export default class GooglePlaceSearchInput extends React.Component {
 		return this.props.onPlaceSelected(place);
 	}
 
+	_removeLocation = (event) => {
+		this.setState({
+			inputValue: '',
+			placeResults: []
+		});
+
+		if (this.props.onRemove) {
+			return this.props.onRemove(event);
+		}
+	}
+
 	renderSearchIcon = () => <div className={styles.searchIcon}>
 		<svg version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 451 451">
 			<g>
@@ -118,6 +130,9 @@ export default class GooglePlaceSearchInput extends React.Component {
 							{thisPrediction.description}
 						</div>
 					})}
+					<div className={classNames([styles.searchResult, styles.removeLocation])} onClick={this._removeLocation}>
+						Remove location
+					</div>
 				</div>
 			}
 		</div>

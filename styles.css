@@ -50,6 +50,7 @@
 .searchResult {
 	width: auto;
 	padding: 8px 10px;
+	padding-left: 15px;
 }
 
 .searchResult:hover {
@@ -60,4 +61,8 @@
 	position: absolute;
 	bottom: 0;
 	right: 5px;
+}
+
+.removeLocation {
+	border-top: solid 0.5px #9b9b9b;
 }
