@@ -48,7 +48,7 @@ export default class GooglePlaceSearchInput extends React.Component {
 
 	_getPlace = async inputValue => {
 		const googleApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${this.props.apiKey}&input=${inputValue}`;
-		const googleLocationUrl = `https://maps.googleapis.com/maps/api/place/details/json?placeid={{placeId}}`;
+		// const googleLocationUrl = `https://maps.googleapis.com/maps/api/place/details/json?placeid={{placeId}}`;
 
 		return axios({
 			method: 'get',
@@ -57,7 +57,7 @@ export default class GooglePlaceSearchInput extends React.Component {
 				'Access-Control-Allow-Origin': '*'
 			}
 		}).then(googleResult => {
-			console.log('googleResult', googleResult);
+			console.log('googleResult', googleResult.data);
 			if (googleResult.statusText !== 'OK') {
 				console.error('ERROR');
 			}
@@ -66,7 +66,7 @@ export default class GooglePlaceSearchInput extends React.Component {
 				placeResults: (googleResult.data.predictions || []).slice(0, this.props.numberResults)
 			});
 
-			return googleResult;
+			return googleResult.data
 		}).catch(console.error);
 	};
 
@@ -82,17 +82,15 @@ export default class GooglePlaceSearchInput extends React.Component {
 		return this.props.onChange(event, googleResult);
 	}
 
-	_onClick = (event) => {
+	_onClick = (event, place) => {
 		event.preventDefault();
-
-		const placeId = event.target['data-placeId'];
 
 		this.setState({
 			inputValue: event.target.innerHTML,
 			placeResults: []
 		});
 
-		return this.props.onPlaceSelected(event, placeId);
+		return this.props.onPlaceSelected(place);
 	}
 
 	renderSearchIcon = () => <div className={styles.searchIcon}>
@@ -116,7 +114,7 @@ export default class GooglePlaceSearchInput extends React.Component {
 			{!!this.state.placeResults.length &&
 				<div className={classNames([styles.autoCompleteContainer, this.props.autoCompleteContainerClassName])}>
 					{this.state.placeResults.map(thisPrediction => {
-						return <div className={classNames([styles.searchResult, this.props.resultClassName])} onClick={this._onClick} id={thisPrediction.id} data-placeId={thisPrediction.place_id}>
+						return <div key={thisPrediction.id} className={classNames([styles.searchResult, this.props.resultClassName])} onClick={(evt) => this._onClick(evt, thisPrediction)} id={thisPrediction.id}>
 							{thisPrediction.description}
 						</div>
 					})}
