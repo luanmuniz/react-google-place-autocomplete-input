@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/luanmuniz/react-google-place-autocomplete-input/issues"
   },
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
     "preversion": "git pull && rm -rf ./node_modules/ && npm install && npm test",
     "postversion": "git push && npm publish --access=public && git push --tags",
