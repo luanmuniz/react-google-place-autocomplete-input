@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import axios from 'axios';
 
 import styles from './styles.css';
 
@@ -18,7 +17,6 @@ function debounce(fn, delay) {
 export default class GooglePlaceSearchInput extends React.Component {
 
 	static propTypes = {
-		apiKey: PropTypes.string.isRequired,
 		onChange: PropTypes.func.isRequired,
 		onPlaceSelected: PropTypes.func.isRequired,
 		onRemove: PropTypes.func,
@@ -47,28 +45,35 @@ export default class GooglePlaceSearchInput extends React.Component {
 		this._getPlace = debounce(this._getPlace, 300)
 	}
 
-	_getPlace = async inputValue => {
-		const googleApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${this.props.apiKey}&input=${inputValue}`;
-		// const googleLocationUrl = `https://maps.googleapis.com/maps/api/place/details/json?placeid={{placeId}}`;
+	componentDidMount() {
+		if (!window.google) {
+			throw new Error(
+				'[react-google-place-autocomplete-input]: Google Maps JavaScript API library must be loaded. See: https://developers.google.com/maps/documentation/javascript/places'
+			);
+		}
 
-		return axios({
-			method: 'get',
-			url: googleApiUrl,
-			headers: {
-				'Access-Control-Allow-Origin': '*'
-			}
-		}).then(googleResult => {
-			console.log('googleResult', googleResult.data);
-			if (googleResult.statusText !== 'OK') {
-				console.error('ERROR');
-			}
+		if (!window.google.maps.places) {
+			throw new Error(
+				'[react-google-place-autocomplete-input]: Google Maps Places library must be loaded. Please add `libraries=places` to the src URL. See: https://developers.google.com/maps/documentation/javascript/places'
+			);
+		}
 
+		this.autocompleteService = new window.google.maps.places.AutocompleteService();
+	}
+
+	_getPlace = inputValue => {
+		if (!inputValue) {
+			return;
+		}
+
+		this.autocompleteService.getPlacePredictions({
+			input: inputValue
+		}, (predictions) => {
 			this.setState({
-				placeResults: (googleResult.data.predictions || []).slice(0, this.props.numberResults)
+				placeResults: (predictions || []).slice(0, this.props.numberResults)
 			});
-
-			return googleResult.data
-		}).catch(console.error);
+			this.props.onChange(predictions);
+		})
 	};
 
 	_onChange = async (event) => {
@@ -78,9 +83,7 @@ export default class GooglePlaceSearchInput extends React.Component {
 			inputValue: event.target.value
 		});
 
-		const googleResult = await this._getPlace(event.target.value);
-
-		return this.props.onChange(event, googleResult);
+		this._getPlace(event.target.value);
 	}
 
 	_onClick = (event, place) => {
