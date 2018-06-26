@@ -60,10 +60,10 @@
 
 .poweredByGoogle {
 	position: absolute;
-	bottom: 0;
+	bottom: 5px;
 	right: 5px;
 }
 
 .removeLocation {
-	border-top: solid 0.5px #9b9b9b;
+	border-top: solid 0.5px #e3e3e3;
 }
