@@ -59,6 +59,7 @@ export default class GooglePlaceSearchInput extends React.Component {
 		}
 
 		this.autocompleteService = new window.google.maps.places.AutocompleteService();
+		this.searchInput.focus();
 	}
 
 	_getPlace = inputValue => {
@@ -123,7 +124,7 @@ export default class GooglePlaceSearchInput extends React.Component {
 		return <div className={classNames([styles.searchContainer, this.props.containerClassName])}>
 			<div className={styles.searchInputContainer}>
 				{this.renderSearchIcon()}
-				<input value={this.state.inputValue} onChange={this._onChange} className={classNames([styles.searchInput, this.props.inputClassName])} />
+				<input ref={(input) => { this.searchInput = input; }} value={this.state.inputValue} onChange={this._onChange} className={classNames([styles.searchInput, this.props.inputClassName])} />
 			</div>
 			<div className={classNames([styles.poweredByGoogle, this.props.resultClassName])}><img src={this.poweredImage} /></div>
 			{!!this.state.placeResults.length &&
