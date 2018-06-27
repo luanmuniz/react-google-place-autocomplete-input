@@ -38,7 +38,7 @@ export default class GooglePlaceSearchInput extends React.Component {
 		this.poweredImage = 'https://developers.google.com/places/documentation/images/powered-by-google-on-white.png';
 
 		this.state = {
-			inputValue: props.value,
+			inputValue: props.value || '',
 			placeResults: []
 		};
 
@@ -59,7 +59,6 @@ export default class GooglePlaceSearchInput extends React.Component {
 		}
 
 		this.autocompleteService = new window.google.maps.places.AutocompleteService();
-		this.searchInput.focus();
 	}
 
 	_getPlace = inputValue => {
@@ -70,19 +69,20 @@ export default class GooglePlaceSearchInput extends React.Component {
 		this.autocompleteService.getPlacePredictions({
 			input: inputValue
 		}, (predictions) => {
-			predictions = predictions.map((prediction, idx) => {
+			predictions = predictions ? predictions.map((prediction, idx) => {
 				return { ...prediction, index: idx};
-			});
+			}) : [];
 			this.setState({
 				placeResults: (predictions || []).slice(0, this.props.numberResults)
 			});
-			this.props.onChange(predictions);
+
+			if (this.props.onChange) {
+				this.props.onChange(predictions);
+			}
 		})
 	};
 
-	_onChange = async (event) => {
-		event.preventDefault();
-
+	_onChange = event => {
 		this.setState({
 			inputValue: event.target.value
 		});
@@ -198,7 +198,7 @@ export default class GooglePlaceSearchInput extends React.Component {
 			<div className={styles.searchInputContainer}>
 				{this.renderSearchIcon()}
 				<input
-					ref={(input) => { this.searchInput = input; }}
+					autoFocus
 					value={this.state.inputValue}
 					onChange={this._onChange}
 					className={classNames([styles.searchInput, this.props.inputClassName])}
