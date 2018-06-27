@@ -70,6 +70,9 @@ export default class GooglePlaceSearchInput extends React.Component {
 		this.autocompleteService.getPlacePredictions({
 			input: inputValue
 		}, (predictions) => {
+			predictions = predictions.map((prediction, idx) => {
+				return { ...prediction, index: idx};
+			});
 			this.setState({
 				placeResults: (predictions || []).slice(0, this.props.numberResults)
 			});
@@ -109,6 +112,76 @@ export default class GooglePlaceSearchInput extends React.Component {
 		}
 	}
 
+	_handleInputKeyDown = event => {
+		switch (event.key) {
+			case 'Enter':
+				event.preventDefault();
+				this.handleEnterKey();
+				break;
+			case 'ArrowDown':
+				event.preventDefault(); // prevent the cursor from moving
+				this.handleDownKey();
+				break;
+			case 'ArrowUp':
+				event.preventDefault(); // prevent the cursor from moving
+				this.handleUpKey();
+				break;
+		}
+	};
+
+	handleEnterKey = () => {
+		const activePredication = this.state.placeResults.find(prediction => prediction.active);
+
+		this.setState({
+			inputValue: activePredication.description,
+			placeResults: []
+		});
+
+		return this.props.onPlaceSelected(activePredication);
+	};
+
+	handleUpKey = () => {
+		if (this.state.placeResults.length === 0) {
+			return;
+		}
+
+		const activePredication = this.state.placeResults.find(prediction => prediction.active);
+		if (activePredication === undefined) {
+			this.selectActiveAtIndex(this.state.placeResults.length - 1);
+		} else if (activePredication.index === 0) {
+			this.selectActiveAtIndex(this.state.placeResults.length - 1);
+		} else {
+			this.selectActiveAtIndex(activePredication.index - 1);
+		}
+	};
+
+	handleDownKey = () => {
+		if (this.state.placeResults.length === 0) {
+			return;
+		}
+
+		const activePredication = this.state.placeResults.find(prediction => prediction.active);
+		if (activePredication === undefined) {
+			this.selectActiveAtIndex(0);
+		} else if (activePredication.index === this.state.placeResults.length - 1) {
+			this.selectActiveAtIndex(0);
+		} else {
+			this.selectActiveAtIndex(activePredication.index + 1);
+		}
+	};
+
+	selectActiveAtIndex = index => {
+		this.setState({
+			placeResults: this.state.placeResults.map((prediction, idx) => {
+				if (idx === index) {
+					return { ...prediction, active: true };
+				} else {
+					return { ...prediction, active: false };
+				}
+			}),
+		});
+	};
+
 	renderSearchIcon = () => <div className={styles.searchIcon}>
 		<svg version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 451 451">
 			<g>
@@ -124,13 +197,24 @@ export default class GooglePlaceSearchInput extends React.Component {
 		return <div className={classNames([styles.searchContainer, this.props.containerClassName])}>
 			<div className={styles.searchInputContainer}>
 				{this.renderSearchIcon()}
-				<input ref={(input) => { this.searchInput = input; }} value={this.state.inputValue} onChange={this._onChange} className={classNames([styles.searchInput, this.props.inputClassName])} />
+				<input
+					ref={(input) => { this.searchInput = input; }}
+					value={this.state.inputValue}
+					onChange={this._onChange}
+					className={classNames([styles.searchInput, this.props.inputClassName])}
+					onKeyDown={this._handleInputKeyDown}
+				/>
 			</div>
 			<div className={classNames([styles.poweredByGoogle, this.props.resultClassName])}><img src={this.poweredImage} /></div>
 			{!!this.state.placeResults.length &&
 				<div className={classNames([styles.autoCompleteContainer, this.props.autoCompleteContainerClassName])}>
 					{this.state.placeResults.map(thisPrediction => {
-						return <div key={thisPrediction.id} className={classNames([styles.searchResult, this.props.resultClassName])} onClick={(evt) => this._onClick(evt, thisPrediction)} id={thisPrediction.id}>
+						return <div
+							key={thisPrediction.id}
+							className={classNames([styles.searchResult, this.props.resultClassName, !!thisPrediction.active && styles.activeSearchResult])}
+							onClick={(evt) => this._onClick(evt, thisPrediction)}
+							id={thisPrediction.id}
+							onMouseOver={() => this.selectActiveAtIndex(thisPrediction.index)}>
 							{thisPrediction.description}
 						</div>
 					})}

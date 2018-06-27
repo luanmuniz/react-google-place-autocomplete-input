@@ -54,10 +54,6 @@
 	padding-left: 15px;
 }
 
-.searchResult:hover {
-	background-color: #e3e3e3;
-}
-
 .poweredByGoogle {
 	position: absolute;
 	bottom: 5px;
@@ -66,4 +62,8 @@
 
 .removeLocation {
 	border-top: solid 0.5px #e3e3e3;
+}
+
+.activeSearchResult {
+	background-color: #e3e3e3;
 }
