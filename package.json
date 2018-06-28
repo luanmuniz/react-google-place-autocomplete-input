@@ -6,15 +6,12 @@
     "type": "git",
     "url": "git+https://github.com/luanmuniz/react-google-place-autocomplete-input.git"
   },
-  "engines": {
-    "yarn": "NO LONGER USED - Please use npm"
-  },
   "author": "Luan Muniz <luan@luanmuniz.com.br>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/luanmuniz/react-google-place-autocomplete-input/issues"
   },
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
     "preversion": "git pull && rm -rf ./node_modules/ && npm install && npm test",
     "postversion": "git push && npm publish --access=public && git push --tags",
@@ -76,11 +73,11 @@
     "url-loader": "0.6.2",
     "webpack": "3.11.0",
     "webpack-bundle-analyzer": "2.10.0",
+    "webpack-combine-loaders": "2.0.3",
     "webpack-dev-server": "2.11.1"
   },
   "dependencies": {
     "classnames": "2.2.6",
-    "react": "16.4.0",
-    "whatwg-fetch": "2.0.4"
+    "react": "16.4.0"
   }
 }

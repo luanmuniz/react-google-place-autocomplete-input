@@ -5,6 +5,8 @@ const common = require('./common');
 
 const CleanPlugin = require('clean-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const combineLoaders = require('webpack-combine-loaders');
 
 module.exports = {
 	entry: common.entry,
@@ -14,7 +16,18 @@ module.exports = {
 			common.jsLoader,
 			common.fileLoader,
 			common.urlLoader,
-			common.cssLoader
+			{
+				loader: ExtractTextPlugin.extract(
+					combineLoaders([{
+						loader: 'css-loader',
+						query: {
+							localIdentName: '[name]__[local]___[hash:base64:5]',
+							modules: true
+						}
+					}])
+				),
+				test: /\.css$/,
+			}
 		]
 	},
 
@@ -30,6 +43,8 @@ module.exports = {
 				'NODE_ENV': '"production"'
 			}
 		}),
+
+		new ExtractTextPlugin('styles.css'),
 
 		new webpack.optimize.UglifyJsPlugin({
 			sourceMap: true

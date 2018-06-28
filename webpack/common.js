@@ -51,7 +51,9 @@ module.exports = {
 
 	output: {
 		filename: '[name].js',
+		library: [ 'GooglePlaceSearchInput' ],
 		libraryExport: 'default',
+		libraryTarget: 'umd',
 		path: paths.dist
 	},
 
