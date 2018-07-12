@@ -90,15 +90,55 @@ export default class GooglePlaceSearchInput extends React.Component {
 		this._getPlace(event.target.value);
 	}
 
+	getLatLng = result => {
+		return new Promise((resolve, reject) => {
+			try {
+				const latLng = {
+					lat: result.geometry.location.lat(),
+					lng: result.geometry.location.lng(),
+				};
+				resolve(latLng);
+			} catch (e) {
+				reject(e);
+			}
+		});
+	};
+
+	geocodeByPlaceId = placeId => {
+		const geocoder = new window.google.maps.Geocoder();
+		const OK = window.google.maps.GeocoderStatus.OK;
+
+		return new Promise((resolve, reject) => {
+			geocoder.geocode({ placeId }, (results, status) => {
+				if (status !== OK) {
+					reject(status);
+				}
+				resolve(results);
+			});
+		});
+	};
+
+	_selectPlace = async place => {
+		try {
+			const geoCode = await this.geocodeByPlaceId(place.place_id);
+			console.log("geoCode", geoCode)
+			place.latLng = await this.getLatLng(geoCode[0])
+			this.props.onPlaceSelected(place);
+		} catch (e) {
+			console.error("Failed to get geocode", e);
+		}
+	}
+
 	_onClick = (event, place) => {
 		event.preventDefault();
-
 		this.setState({
 			inputValue: event.target.innerHTML,
 			placeResults: []
 		});
 
-		return this.props.onPlaceSelected(place);
+		if (!place) return;
+
+		this._selectPlace(place);
 	}
 
 	_removeLocation = (event) => {
@@ -131,13 +171,14 @@ export default class GooglePlaceSearchInput extends React.Component {
 
 	handleEnterKey = () => {
 		const activePredication = this.state.placeResults.find(prediction => prediction.active);
+		if (!activePredication) return;
 
 		this.setState({
 			inputValue: activePredication.description,
 			placeResults: []
 		});
 
-		return this.props.onPlaceSelected(activePredication);
+		return this._selectPlace(activePredication);
 	};
 
 	handleUpKey = () => {
