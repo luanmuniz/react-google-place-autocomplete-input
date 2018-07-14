@@ -92,13 +92,14 @@ export default class GooglePlaceSearchInput extends React.Component {
 
 	_onClick = (event, place) => {
 		event.preventDefault();
-
 		this.setState({
 			inputValue: event.target.innerHTML,
 			placeResults: []
 		});
 
-		return this.props.onPlaceSelected(place);
+		if (!place) return;
+
+		this.props.onPlaceSelected(place);
 	}
 
 	_removeLocation = (event) => {
@@ -131,13 +132,14 @@ export default class GooglePlaceSearchInput extends React.Component {
 
 	handleEnterKey = () => {
 		const activePredication = this.state.placeResults.find(prediction => prediction.active);
+		if (!activePredication) return;
 
 		this.setState({
 			inputValue: activePredication.description,
 			placeResults: []
 		});
 
-		return this.props.onPlaceSelected(activePredication);
+		this.props.onPlaceSelected(activePredication);
 	};
 
 	handleUpKey = () => {

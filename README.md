@@ -4,17 +4,26 @@ A Input React Component for Google Place AutoComplete
 
 The maintainers of the project are:
 - [Luan Muniz](http://github.com/luanmuniz)
+- [Arjun Komath](http://github.com/arjunkomath)
+
+## Install
+
+`npm i react-google-place-autocomplete-input`
 
 ## Using
 
 ```javascript
 import React from 'react';
-import MyComponent from 'my-component';
+import GooglePlaceSearchInput from 'react-google-place-autocomplete-input';
 
 export default React.createClass({
     render() {
         return (
-            <MyComponent myName="World" />
+			<GooglePlaceSearchInput
+				onChange={console.log}
+				onPlaceSelected={console.log}
+				onRemove={console.log}
+			/>
         );
     }
 });
