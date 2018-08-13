@@ -59,6 +59,10 @@ export default class GooglePlaceSearchInput extends React.Component {
 		}
 
 		this.autocompleteService = new window.google.maps.places.AutocompleteService();
+
+		if (this.props.value) {
+			this._getPlace(this.props.value);
+		}
 	}
 
 	_getPlace = inputValue => {
