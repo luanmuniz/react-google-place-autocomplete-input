@@ -199,6 +199,18 @@ export default class GooglePlaceSearchInput extends React.Component {
 		</svg>
 	</div>
 
+	renderCheckIcon = () => <div className={styles.checkIcon}>
+		<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
+			<path style={{fill: '#4a4a4a'}} d="M21 6.285l-11.16 12.733-6.84-6.018 1.319-1.49 5.341 4.686 9.865-11.196 1.475 1.285z" />
+		</svg>
+	</div>
+
+	renderRemoveIcon = () => <div className={styles.removeIcon}>
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+			<path style={{fill: '#4a4a4a'}} d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z" />
+		</svg>
+	</div>
+
 	render() {
 		return <div className={classNames([styles.searchContainer, this.props.containerClassName])}>
 			<div className={styles.searchInputContainer}>
@@ -221,10 +233,12 @@ export default class GooglePlaceSearchInput extends React.Component {
 							onClick={(evt) => this._onClick(evt, thisPrediction)}
 							id={thisPrediction.id}
 							onMouseOver={() => this.selectActiveAtIndex(thisPrediction.index)}>
+							{thisPrediction.description === this.state.inputValue && this.renderCheckIcon()}
 							{thisPrediction.description}
 						</div>
 					})}
 					<div className={classNames([styles.searchResult, styles.removeLocation])} onClick={this._removeLocation}>
+						{this.renderRemoveIcon()}
 						Remove location
 					</div>
 				</div>
