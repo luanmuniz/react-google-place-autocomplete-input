@@ -11,6 +11,6 @@ stories.add('without props', () => (
 		onChange={console.log}
 		onPlaceSelected={console.log}
 		onRemove={console.log}
-		value={'Test City'}
+		value={'Kerala, India'}
 	/>
 ));

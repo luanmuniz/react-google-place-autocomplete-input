@@ -23,7 +23,7 @@
 	border-radius: 15px;
 	padding: 0 10px;
 	padding-left: 26px;
-	font-size: 13px;
+	font-size: 12px;
 }
 
 .searchIcon {
@@ -43,15 +43,16 @@
 .autoCompleteContainer {
 	width: auto;
 	font-family: sans-serif;
-	font-size: 13px;
-	color: #3e3e3e;
+	font-size: 12px;
+	color: #4a4a4a;
 	padding-bottom: 28px;
 }
 
 .searchResult {
+	position: relative;
 	width: auto;
 	padding: 8px 10px;
-	padding-left: 15px;
+	padding-left: 35px;
 }
 
 .poweredByGoogle {
@@ -66,4 +67,18 @@
 
 .activeSearchResult {
 	background-color: #e3e3e3;
+}
+
+.checkIcon {
+	position: absolute;
+	top: 2px;
+	left: 6px;
+	transform: scale(0.6);
+}
+
+.removeIcon {
+	position: absolute;
+	top: 2px;
+	left: 6px;
+	transform: scale(0.3);
 }
